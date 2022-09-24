@@ -43,7 +43,7 @@ def test_decision_tree(df_train, df_test, attributes, max_max_depth):
             print('Max Depth: %d | Purity Function: %s | Test Set: Testing data | Error: %.3f' % (max_depth, purity_function, testing_error))
 
 if __name__ == '__main__':
-    #TESTING FOR PROBLEM 2B
+    print('TESTING FOR PROBLEM 2B')
     with open ( './data/cars/data-desc.txt' , 'r' ) as f:
         desc_lines = f.readlines()
 
@@ -55,19 +55,19 @@ if __name__ == '__main__':
 
     test_decision_tree(df_train1, df_test1, attributes1, 6)
 
-    #TESTING FOR PROBLEM 3A
-    # attributes2 = ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 
-    # 'loan', 'contact', 'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome']
+    print('TESTING FOR PROBLEM 3A')
+    attributes2 = ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 
+    'loan', 'contact', 'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome']
 
-    # df_train2 = pd.read_csv('./data/bank/train.csv', names=attributes2 + ['label'])
-    # df_test2 = pd.read_csv('./data/bank/test.csv', names=attributes2 + ['label'])
+    df_train2 = pd.read_csv('./data/bank/train.csv', names=attributes2 + ['label'])
+    df_test2 = pd.read_csv('./data/bank/test.csv', names=attributes2 + ['label'])
 
-    # df_train2 = process_data(df_train2, attributes2, replace_unknown=False)
-    # df_test2 = process_data(df_test2, attributes2, replace_unknown=False)
+    df_train2 = process_data(df_train2, attributes2, replace_unknown=False)
+    df_test2 = process_data(df_test2, attributes2, replace_unknown=False)
 
-    # test_decision_tree(df_train2, df_test2, attributes2, 16)
+    test_decision_tree(df_train2, df_test2, attributes2, 16)
 
-    #TESTING FOR PROBLEM 3B
+    print('TESTING FOR PROBLEM 3B')
 
     attributes3 = ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 
     'loan', 'contact', 'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome']
