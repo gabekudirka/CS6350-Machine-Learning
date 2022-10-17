@@ -41,7 +41,7 @@ class DecisionTree:
         self.attributes = attributes
         if not weighted:
             data['weights'] = 1 / data.shape[0]
-            self.examples = data
+        self.examples = data
         self.labels = data['label']
 
     #This is a driver function for the id3 algorithm. This function is called by the user and sets

@@ -9,7 +9,7 @@ class Stump:
         attributes,
         purity_type,
     ):
-        self.stump = DecisionTree(data, attributes).build_tree(purity_type=purity_type, max_depth=1)
+        self.stump = DecisionTree(data, attributes, weighted=True).build_tree(purity_type=purity_type, max_depth=1)
         self.vote = self.compute_vote()
 
     def compute_vote(self):
@@ -43,7 +43,7 @@ class AdaBoostTree:
         self.classifiers = []
         self.weights = np.ones(self.examples.shape[0]) * (1 / self.examples.shape[0])
         self.examples['weights'] = self.weights
-        
+
         for t in range(num_iterations):
             stump = Stump(self.examples, self.attributes, purity_type)
             correct_preds = self.examples.label * stump.preds
