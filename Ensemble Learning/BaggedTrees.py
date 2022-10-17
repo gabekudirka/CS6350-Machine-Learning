@@ -8,10 +8,15 @@ class BaggedTrees:
         self,
         data,
         attributes,
+        full_dataset = None
     ):
         self.examples = data
         self.attributes = attributes
         self.trees = []
+        if full_dataset is None:
+            self.full_dataset = self.examples
+        else:
+            self.full_dataset = full_dataset
 
     def build_trees(self, num_trees, num_samples=None):
         if num_samples is None:
@@ -22,7 +27,7 @@ class BaggedTrees:
         for t in range(num_trees):
             mask = np.random.randint(0,examples_subset.shape[0], examples_subset.shape[0])
             sampled_examples = examples_subset.iloc[mask]
-            tree = DecisionTree(sampled_examples, self.attributes).build_tree(purity_type='entropy', max_depth=float('inf'))
+            tree = DecisionTree(sampled_examples, self.attributes, full_dataset=self.full_dataset).build_tree(purity_type='entropy', max_depth=float('inf'))
             self.trees.append(tree)
 
     def empty_trees(self):
