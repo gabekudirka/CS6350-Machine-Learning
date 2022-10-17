@@ -11,9 +11,9 @@ class BaggedTrees:
     ):
         self.examples = data
         self.attributes = attributes
+        self.trees = []
 
     def build_trees(self, num_trees, num_samples=None):
-        self.trees = []
         if num_samples is None:
             examples_subset = self.examples
         else:
@@ -24,6 +24,9 @@ class BaggedTrees:
             sampled_examples = examples_subset.iloc[mask]
             tree = DecisionTree(sampled_examples, self.attributes).build_tree(purity_type='entropy', max_depth=float('inf'))
             self.trees.append(tree)
+
+    def empty_trees(self):
+        self.trees = []
 
     def predict(self, example):
         pred = 0
@@ -42,9 +45,9 @@ class RandomForest:
     ):
         self.examples = data
         self.attributes = attributes
+        self.trees = []
 
     def build_trees(self, num_iterations, feature_subset_size, num_samples=None):
-        self.trees = []
         if num_samples is None:
             examples_subset = self.examples
         else:
@@ -55,6 +58,9 @@ class RandomForest:
             sampled_examples = examples_subset.iloc[mask]
             tree = DecisionTree(sampled_examples, self.attributes).build_tree(purity_type='entropy', max_depth=float('inf'), feature_subset_size=feature_subset_size)
             self.trees.append(tree)
+
+    def empty_trees(self):
+        self.trees = []
 
     def predict(self, example):
         pred = 0
