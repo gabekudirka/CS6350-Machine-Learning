@@ -36,13 +36,18 @@ class DecisionTree:
         self,
         data,
         attributes,
-        weighted = False
+        weighted = False,
+        full_dataset = None
     ):
         self.attributes = attributes
         if not weighted:
             data['weights'] = 1 / data.shape[0]
         self.examples = data
         self.labels = data['label']
+        if full_dataset is None:
+            self.full_dataset = self.examples
+        else:
+            self.full_dataset = full_dataset
 
     #This is a driver function for the id3 algorithm. This function is called by the user and sets
     #the user selected entropy and purity function and then calls the id3 recursive algorithm to build the decision tree
@@ -90,7 +95,7 @@ class DecisionTree:
             attribute_subset = random.sample(attributes, self.feature_subset_size)
         split_attribute = self.select_split_attribute(attribute_subset, examples)
         node.set_split_attribute(split_attribute)
-        possible_values = pd.unique(self.examples[split_attribute])
+        possible_values = pd.unique(self.full_dataset[split_attribute])
 
         #Iterates through all of the possible values of the split attribute and on each iteration
         #creates a new node, sets it as a branch of the parent, and calls the id3 function with that

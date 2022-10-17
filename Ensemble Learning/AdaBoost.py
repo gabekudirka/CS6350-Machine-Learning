@@ -1,3 +1,4 @@
+from torch import full
 from decision_tree import DecisionTree
 import numpy as np
 
@@ -8,8 +9,9 @@ class Stump:
         data,
         attributes,
         purity_type,
+        full_dataset
     ):
-        self.stump = DecisionTree(data, attributes, weighted=True).build_tree(purity_type=purity_type, max_depth=1)
+        self.stump = DecisionTree(data, attributes, weighted=True, full_dataset=full_dataset).build_tree(purity_type=purity_type, max_depth=1)
         self.vote = self.compute_vote()
 
     def compute_vote(self):
@@ -35,9 +37,14 @@ class AdaBoostTree:
         self,
         data,
         attributes,
+        full_dataset = None
     ):
         self.examples = data
         self.attributes = attributes
+        if full_dataset is None:
+            self.full_dataset = self.examples
+        else:
+            self.full_dataset = full_dataset
 
     def build_model(self, num_iterations, purity_type = 'entropy'):
         self.classifiers = []
