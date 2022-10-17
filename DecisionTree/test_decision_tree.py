@@ -50,8 +50,8 @@ if __name__ == '__main__':
     attributes1 = desc_lines[-1].strip().split(',')
     attributes1 = attributes1[:-1]
 
-    df_train1 = pd.read_csv('./data/cars/train.csv', names=attributes1 + ['label'])
-    df_test1 = pd.read_csv('./data/cars/test.csv', names=attributes1 + ['label'])
+    df_train1 = pd.read_csv('../data/cars/train.csv', names=attributes1 + ['label'])
+    df_test1 = pd.read_csv('../data/cars/test.csv', names=attributes1 + ['label'])
 
     test_decision_tree(df_train1, df_test1, attributes1, 6)
 
@@ -59,8 +59,8 @@ if __name__ == '__main__':
     attributes2 = ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 
     'loan', 'contact', 'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome']
 
-    df_train2 = pd.read_csv('./data/bank/train.csv', names=attributes2 + ['label'])
-    df_test2 = pd.read_csv('./data/bank/test.csv', names=attributes2 + ['label'])
+    df_train2 = pd.read_csv('../data/bank/train.csv', names=attributes2 + ['label'])
+    df_test2 = pd.read_csv('../data/bank/test.csv', names=attributes2 + ['label'])
 
     df_train2 = process_data(df_train2, attributes2, replace_unknown=False)
     df_test2 = process_data(df_test2, attributes2, replace_unknown=False)
@@ -72,8 +72,8 @@ if __name__ == '__main__':
     attributes3 = ['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 
     'loan', 'contact', 'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome']
 
-    df_train3 = pd.read_csv('./data/bank/train.csv', names=attributes3 + ['label'])
-    df_test3 = pd.read_csv('./data/bank/test.csv', names=attributes3 + ['label'])
+    df_train3 = pd.read_csv('../data/bank/train.csv', names=attributes3 + ['label'])
+    df_test3 = pd.read_csv('../data/bank/test.csv', names=attributes3 + ['label'])
 
     df_train3 = process_data(df_train3, attributes3, replace_unknown=True)
     df_test3 = process_data(df_test3, attributes3, replace_unknown=True)
