@@ -84,14 +84,25 @@ if __name__ == '__main__':
     # textfile.close()
 
     #Bagged Trees bias/variance decomposition
+    print('Building Trees')
     num_trees = 500
     num_samples = 1000
     bagged_predictors = []
-
+    
+    iter_ctr = 0
+    start = time.time()
     for i in range(100):
+        iter_start = time.time()
         bagged_trees = BaggedTrees(df_train, attributes, df_train)
         bagged_trees.build_trees(num_trees, num_samples)
         bagged_predictors.append(bagged_trees)
+        iter_ctr += 1
+        iter_end = time.time()
+        print(iter_ctr)
+        print(iter_end - iter_start)
+
+    end = time.time()
+    print(end - start)
 
     single_trees = [predictor.trees[0] for predictor in bagged_predictors]
     single_tree_biases = []

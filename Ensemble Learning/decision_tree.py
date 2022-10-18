@@ -48,6 +48,9 @@ class DecisionTree:
             self.full_dataset = self.examples
         else:
             self.full_dataset = full_dataset
+        self.unique_vals = {}
+        for attribute in attributes:
+            self.unique_vals[attribute] = pd.unique(self.full_dataset[attribute])
 
     #This is a driver function for the id3 algorithm. This function is called by the user and sets
     #the user selected entropy and purity function and then calls the id3 recursive algorithm to build the decision tree
@@ -62,7 +65,7 @@ class DecisionTree:
         elif purity_type == 'me':
             self.purity_function = self.calculate_majority_error
         
-        self.total_purity = self.purity_function(self.examples)
+        self.total_purity = self.purity_function(self.examples, self.examples.weights.sum())
 
         self.id3(self.examples, self.attributes, self.root_node, 0)
         
@@ -95,7 +98,7 @@ class DecisionTree:
             attribute_subset = random.sample(attributes, self.feature_subset_size)
         split_attribute = self.select_split_attribute(attribute_subset, examples)
         node.set_split_attribute(split_attribute)
-        possible_values = pd.unique(self.full_dataset[split_attribute])
+        possible_values = self.unique_vals[split_attribute]
 
         #Iterates through all of the possible values of the split attribute and on each iteration
         #creates a new node, sets it as a branch of the parent, and calls the id3 function with that
@@ -104,9 +107,10 @@ class DecisionTree:
         for value in possible_values:
             new_attributes = attributes.copy()
             new_attributes.remove(split_attribute)
-            new_node = Node(node, examples[examples[split_attribute] == value], new_attributes, depth+1)
+            new_examples = examples[examples[split_attribute] == value]
+            new_node = Node(node, new_examples, new_attributes, depth+1)
             node.branches[value] = new_node
-            self.id3(examples[examples[split_attribute] == value], new_attributes, new_node, depth+1)
+            self.id3(new_examples, new_attributes, new_node, depth+1)
 
     #This function gets the information gain of each of the attributes and returns the attribute with the highest gain
     def select_split_attribute(self, attributes, examples):
@@ -119,33 +123,25 @@ class DecisionTree:
     #This function calculates the information gain with the user selected purity function
     def calculate_info_gain(self, examples, attribute):
         unique_vals = pd.unique(examples[attribute])
-        value_counts = examples[attribute].value_counts()
         total = examples.weights.sum()
         gain = 0
         for val in unique_vals:
             examples_with_val = examples[examples[attribute] == val]
-            purity = self.purity_function(examples_with_val)
-            weighted_purity = (examples_with_val.weights.sum()/total)*purity
+            examples_weight_sum = examples_with_val.weights.sum()
+            purity = self.purity_function(examples_with_val, examples_weight_sum)
+            weighted_purity = (examples_weight_sum/total)*purity
                 
             gain += weighted_purity
 
         return self.total_purity - gain
 
-    def calculate_entropy(self, examples):
+    def calculate_entropy(self, examples, total):
         labels = examples['label'].unique()
-        total = examples.weights.sum()
         entropy = 0
         for label in labels:
             examples_label = examples[examples['label'] == label]
             p = examples_label.weights.sum() / total
-            #print('label: %s - p: %f' % (label, p))
             entropy -= p*math.log(p, 2)
-        #print('')
-        # counts = labels.value_counts()
-        # entropy = 0
-        # for count in counts:
-        #     p = (count / len(labels))
-        #     entropy -= p*math.log(p, 2)
 
         return entropy
 
