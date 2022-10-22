@@ -71,19 +71,29 @@ class DecisionTree:
         
         return self
 
+    # Use the sum of weights to get the most common label for assigning to a leaf node
+    def get_most_common(self, examples):
+        max = -1
+        for label in examples.label.unique():
+            label_weights = examples[examples['label'] == label]['weights'].sum()
+            if label_weights > max:
+                max = label_weights
+                most_common = label
+
+        return most_common
+
     #This is the recursive function that runs the id3 algorithm to create a decision tree
     def id3(self, examples, attributes, node, depth):
         #This is the first base case. When the set of examples passed in to the id3 algorithm is empty
         #it creates a leaf node with the most common label of the parent as the label
         if examples.empty:
-            parent_y = node.parent.examples['label']
-            most_common_label = parent_y.value_counts().idxmax()
+            most_common_label = self.get_most_common(node.parent.examples)
             node.make_leaf(most_common_label)
             return node
         #This is the second and third base case. When the max depth is reached or if there are no attributes
         #left, a leaf node is created with the most common label in the examples as the label
         elif depth == self.max_depth or len(attributes) == 0:
-            most_common_label = examples['label'].value_counts().idxmax()
+            most_common_label = self.get_most_common(examples)
             node.make_leaf(most_common_label)
             return node
         #This is the third base case. If all the labels in the example are the same, a leaf node is created
@@ -92,6 +102,7 @@ class DecisionTree:
             node.make_leaf(examples['label'].iloc[0])
             return node
             
+        #For the random forest algorithm, if a subset size is specified, choose the best attribute from a random subset of the attributes
         if self.feature_subset_size is None or len(attributes) < self.feature_subset_size:
             attribute_subset = attributes
         else:
@@ -117,7 +128,6 @@ class DecisionTree:
         gains = {}
         for attribute in attributes:
             gains[attribute] = self.calculate_info_gain(examples, attribute)
-        
         return max(gains, key=gains.get)
 
     #This function calculates the information gain with the user selected purity function
@@ -135,6 +145,7 @@ class DecisionTree:
 
         return self.total_purity - gain
 
+    #Calculates the entropy using weights
     def calculate_entropy(self, examples, total):
         labels = examples['label'].unique()
         entropy = 0
@@ -145,22 +156,16 @@ class DecisionTree:
 
         return entropy
 
-    def calculate_gini_index(self, labels):
-        counts = labels.value_counts()
+    #Calculates the Gini coefficient using weights
+    def calculate_gini_index(self, examples, total):
+        labels = examples['label'].unique()
         gini_index = 0
-        for count in counts:
-            p = (count / len(labels))
+        for label in labels:
+            examples_label = examples[examples['label'] == label]
+            p = examples_label.weights.sum() / total
             gini_index += p**2
 
         return 1 - gini_index
-
-    def calculate_majority_error(self, labels):
-        counts = labels.value_counts()
-        errors = [count / len(labels) for count in counts]
-        p_majority = max(errors)
-        errors.remove(p_majority)
-
-        return sum(errors)
 
     #This function is used after the tree has been built to make a prediction for a given example
     #The tree starts at the root node and this function goes down the tree based on the attribute
