@@ -8,3 +8,43 @@ tree = DecisionTree(df, attributes)
 tree.build_tree(purity_type='gini', max_depth=8)
 prediction = tree.predict(test_example)
 ```
+
+### AdaBoost Tutorial
+From the Adaboost.py file in the Ensemble Learning folder you can import the AdaBoostTree class. To initialize an AdaBoostTree you need to pass in the training data as a pandas dataframe and a list of the attributes in the data. Then to train the adaboost algorithm you need to call the build_model function from the AdaBoost object, passing in the number of weak learners you want to build and the purity type for each stump ('entropy', 'gini', or 'me'). After training the model, you can make predictions by calling the predict function of the AdaBoost object and passing in an example that you want to predict.
+Example:
+```
+adaboost = AdaBoostTree(df, attributes)
+adaboost.build_model(50, purity_type='gini')
+prediction = adaboost.predict(test_example)
+```
+
+### Bagged Trees tutorial
+From the BaggedTrees.py file in the Ensemble Learning folder you can import the BaggedTrees class. To initialize a BaggedTrees object you need to pass in the training data as a pandas dataframe and a list of attributes in the data. Then to train the model you can call the build_trees function of the BaggedTrees object, passing in the number of trees you want to build. If you only want to train on a sample of the data passed in, you can also specify the number of samples you want to train on however by default the BaggedTrees algorithm will train on all of the data. After training the model, you can make predictions by calling the predict function of the BaggedTrees object and passing in an example that you want to predict.
+Example:
+```
+bagged_trees = BaggedTrees(df, attributes)
+bagged_trees.build_trees(50)
+prediction = bagged_trees.predict(test_example)
+```
+
+### Random Forest tutorial
+From the BaggedTrees.py file in the Ensemble Learning folder you can import the RandomForest class. To initialize a RandomForest object you need to pass in the training data as a pandas dataframe and a list of attributes in the data. Then to train the model you can call the build_trees function of the RandomForest object, passing in the number of trees you want to build and the size of the subset of attributes that will be used when training the trees. If you only want to train on a sample of the data passed in, you can also specify the number of samples you want to train on however by default the RandomForest algorithm will train on all of the data. After training the model, you can make predictions by calling the predict function of the RandomForest object and passing in an example that you want to predict.
+Example:
+```
+random_forest = RandomForest(df, attributes)
+random_forest.build_trees(50)
+prediction = random_forest.predict(test_example)
+```
+
+### LMS tutorial
+From the LinearRegression.py file in the Linear Regression folder you can import the LinearRegressor class. To initialize a LinearRegressor object you need to pass in the X and y data seperately as numpy arrays. Then to train the model using batch gradient descent you can call the gradient_descent function of the LinearRegressor object, passing in the learning rate and the tolerance for testing for convergence. By default the tolerance is 1e-6. If you want to train the model using stochastic gradient descent you can call the stochastic_gradient_descent function specifying the learning rate and the number of iterations you would like to train for. After training the model, you can make predictions by calling the predict function of the LinearRegressor object and passing in an example that you want to predict. You can access the learned weights through the w attribute of the LinearRegressor object.
+Example:
+```
+regressor = LinearRegressor(X, y)
+r = 0.01
+regressor.gradient_descent(r)
+prediction = regressor.predict(test_example)
+regressor.stochastic_gradient_descent(r, 100)
+prediction = regressor.predict(test_example)
+weights = regressor.w
+```
