@@ -48,3 +48,24 @@ regressor.stochastic_gradient_descent(r, 100)
 prediction = regressor.predict(test_example)
 weights = regressor.w
 ```
+
+### LMS tutorial
+From the Perceptron.py file in the Linear Regression folder you can import the Perceptron class. To initialize you need to pass
+in the X and y training data seperately as numpy arrays. Then to train the perceptron using the standard perceptron algorithm you can call the train_standard function of the Perceptron object, passing in the learning rate and number of epochs. To train the Perceptron using the voted perceptron algorithm you can call the train_voted function of the Perceptron object, passing in the learning rate and number of epochs. To train the Perceptron using the average perceptron algorithm, you can call the train_average function of the perceptron object, passing in the learning rate and number of epochs. For all algorithms, the default number of epochs is 10. After training with any of these algorithms you can call the predict function of the Perceptron object, passing in the example you wish to make a prediction for. If you train using the standard algorithm, you can access the learned weights by from the w attribute of the Perceptron object. If training with the voted perceptron algorithm, you can access the array of learned weight vectors from the w_arr attribute of the Perceptron object. If training with the average perceptron algorithm you can access the cumulated average weight vector by accessing the a attribute of the Perceptron object.
+Example:
+```
+perceptron = Perceptron(X, y)
+r = 0.01
+epochs = 15
+perceptron.train_standard(r, epochs)
+prediction = perceptron.predict(test_example)
+weights = perceptron.w
+
+perceptron.train_voted(r, epochs)
+prediction = perceptron.predict(test_example)
+weight_arrs = perceptron.w_arr
+
+perceptron.train_average(r, epochs)
+prediction = perceptron.predict(test_example)
+avg_weights = perceptron.a
+```
