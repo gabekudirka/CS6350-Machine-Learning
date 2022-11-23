@@ -1,3 +1,3 @@
 #! /bin/bash
 
-python3 'Perceptron/perceptron_test.py'
+python3 'SVM/SVM_test.py'
