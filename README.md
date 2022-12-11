@@ -69,3 +69,18 @@ perceptron.train_average(r, epochs)
 prediction = perceptron.predict(test_example)
 avg_weights = perceptron.a
 ```
+
+### SVM Tutorial
+From the SVM.py file in the SVM file yo can import the SVMClassifier class. To initialize the SVMClassifier object you only need to pass in all of the data as a pandas dataframe. Then to train the SVM Classifier in the primal domain, you can call the train_primal_ssgd method of the class, passing the value of C, the initial learning rate, alpha, and the number of epochs. If you do not pass in a value for alpha, the algorithm will use a learning rate schedule that does not use alpha. If you wish to train the SVMClassifier in the dual domain, call the train_dual method of the SVM classifier object, passing in a value of C and if you want to use the gaussian kernel, also pass in a value of gamma. If you do not pass in a value for gamma, the algorithm will not use the gaussian kernel. Finally, after training with one of the two methods, call the predict function to make a prediction on a passed in example. To the w attribute of the SVMClassifier will allow you to access the learned weight vector after training with either algorithm.
+Example:
+```
+classifier = SVMClassifier(df)
+classifier.train_primal_ssgd(C, lr, alpha=None)
+prediction = classifier.predict(example)
+
+classifier.train_dual(C)
+prediction = classifier.predict(example)
+
+classifier.train_dual(C, gamma)
+prediction = classifier.predict(example)
+```
