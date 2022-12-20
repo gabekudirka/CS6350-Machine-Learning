@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../')
-from decision_tree import DecisionTree
+from .decision_tree import DecisionTree
 import numpy as np
 
 # This class implements the bagged trees algorithm
@@ -34,7 +34,7 @@ class BaggedTrees:
             mask = np.random.randint(0,examples_subset.shape[0], examples_subset.shape[0])
             sampled_examples = examples_subset.iloc[mask]
             #Create a decision tree with unlimited depth
-            tree = DecisionTree(sampled_examples, self.attributes, full_dataset=self.full_dataset).build_tree(purity_type='entropy', max_depth=float('inf'))
+            tree = DecisionTree(sampled_examples, self.attributes, full_dataset=self.full_dataset, weighted=True).build_tree(purity_type='entropy', max_depth=float('inf'))
             self.trees.append(tree)
 
     def empty_trees(self):

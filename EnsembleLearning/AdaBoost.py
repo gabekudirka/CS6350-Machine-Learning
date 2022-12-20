@@ -1,5 +1,5 @@
 from torch import full
-from decision_tree import DecisionTree
+from .decision_tree import DecisionTree
 import numpy as np
 
 #This class is for decision stumps used by the AdaBoost algorithm

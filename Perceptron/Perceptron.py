@@ -17,7 +17,7 @@ class Perceptron:
     def train_standard(self, r, epochs=10):
         self.type = 'standard'
         #Shuffle examples? 
-        self.w = np.zeros(self.X.shape[1])
+        self.w = np.random.rand(self.X.shape[1])
         for i in range(epochs):
             for idx, xi in enumerate(self.X):
                 yi = self.y[idx]
